@@ -23,7 +23,7 @@ npm install
 npm run start
 ```
 
-или
+илиtt
 
 ```
 yarn
