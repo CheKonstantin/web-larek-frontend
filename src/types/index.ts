@@ -3,8 +3,6 @@ export type methodPayType = 'online' | 'recept';
 export interface IPageMain {
 	pageStore: IProduct[];
 	pageProdPreview: string | null;
-	pageCountBox: number;
-	pageStateBox: boolean;
 }
 
 export interface IProduct {
@@ -25,17 +23,14 @@ export interface IBoxProducts {
 	boxClear(): void;
 }
 
-export interface IUserData {
-    getIUserData (): IUser;
-    isValidIUserData (data: IUser): boolean;
-}
-
 export interface IUser {
 	userMethodPay: methodPayType;
 	userAddress: string;
 	userValidAddress: boolean;
     userPhone: string;
     userEmail: string;
+    getIUserData (): IUser;
+    isValidIUserData (data: IUser): boolean;
 }
 
 

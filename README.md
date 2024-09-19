@@ -45,10 +45,55 @@ npm run build
 yarn build
 ```
 
-## Документация
+# Документация "Вэб ларек"
 
-### Описание типов данных
+## Описание типов данных
 
+Алиас для способа оплаты
+
+```
+export type methodPayType = 'online' | 'recept';
+```
+Главная старница
+```
+export interface IPageMain {
+	pageStore: IProduct[];
+	pageProdPreview: string | null;
+}
+```
+Продукт
+```
+export interface IProduct {
+	productId: string;
+	productCat: string;
+	productName: string;
+	productDescr?: string;
+	productSrc: string;
+	productPrice: number;
+}
+```
+Корзина
+```
+export interface IBoxProducts {
+	boxProducts: IProduct[];
+	boxSumPrice: number;
+    boxGetProd(): IProduct[];
+	boxAddProd(prod: IProduct): void;
+	boxDelProd(prodId: string): void;
+	boxClear(): void;
+}
+```
+
+Пользователь
+```
+export interface IUser {
+	userMethodPay: methodPayType;
+	userAddress: string;
+	userValidAddress: boolean;
+    userPhone: string;
+    userEmail: string;
+}
+```
 
 
 ## Архитектура приложения
@@ -82,6 +127,47 @@ yarn build
 - `on` - Установить обработчик на событие
 - `off` - Снять обработчик с события
 - `emit` - Инициировать событие с данными
-- `onAll` - Слушать все события
-- `offAll` - Сбросить все обработчики
-- `trigger` - Сделать коллбек триггер, генерирующий событие при вызове
+
+## Данные
+### Класс PageMainData
+Нужен для работы с объектами товаров
+Включает в себя массив карточек, данные для отображения модалки и экземпляр класса для инициации событий.
+
+Поля 
+- pageStore: IProduct[];
+- pageProdPreview: string | null;
+- events: IEvents
+
+Методы:
+- getProducts(): IProduct[] - добавляет массив товаров
+- addProduct(product: IProduct): void - добавляет товар
+- deleteProduct(productId: string): void - удаляет товар
+
+### Класс BoxProductsData
+Принимает карточки для дальнейшего оформления и работает с ними
+
+Поля 
+- boxProducts: IProduct[];
+- boxSumPrice: number;
+
+Методы
+- boxGetProd(): IProduct[]; - Инициализирует массив продуктов.
+- boxAddProd(prod: IProduct): void; - Добавляет продукт.
+- boxDelProd(prodId: string): void; - Удаляет продукт.
+- boxClear(): void; - Очищает корзину.
+
+### Класс UserData
+Работает с данными пользователя, хранит метод оплаты, адрес, почту, телефон 
+    Поля
+	- userMethodPay: methodPayType;
+	- userAddress: string;
+	- userValidAddress: boolean;
+    - userPhone: string;
+    - userEmail: string;
+
+Методы
+- getIUserData (): IUser; - получает данные пользователя.
+- isValidIUserData (data: IUser): boolean; - проверяет валидность данных от пользователя.
+
+## Представление
+## Презентер
