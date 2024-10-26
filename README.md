@@ -67,7 +67,7 @@ export interface IProduct {
 	productId: string;
 	productCat: string;
 	productName: string;
-	productDescr?: string;
+	productDescr: string;
 	productSrc: string;
 	productPrice: number;
 }
@@ -143,31 +143,29 @@ export interface IUser {
 - addProduct(product: IProduct): void - добавляет товар
 - deleteProduct(productId: string): void - удаляет товар
 
-### Класс BoxProductsData
+### Класс basketProductsData
 Принимает карточки для дальнейшего оформления и работает с ними
 
 Поля 
-- boxProducts: IProduct[];
-- boxSumPrice: number;
+- basketProducts: IProduct[];
+- basketSumPrice: number;
 
 Методы
-- boxGetProd(): IProduct[]; - Инициализирует массив продуктов.
-- boxAddProd(prod: IProduct): void; - Добавляет продукт.
-- boxDelProd(prodId: string): void; - Удаляет продукт.
-- boxClear(): void; - Очищает корзину.
+- basketGetProd(): IProduct[]; - Инициализирует массив продуктов.
+- basketAddProd(prod: IProduct): void; - Добавляет продукт.
+- basketDelProd(prodId: string): void; - Удаляет продукт.
+- basketClear(): void; - Очищает корзину.
 
-### Класс UserData
-Работает с данными пользователя, хранит метод оплаты, адрес, почту, телефон 
-    Поля
-	- userMethodPay: methodPayType;
-	- userAddress: string;
-	- userValidAddress: boolean;
-    - userPhone: string;
-    - userEmail: string;
+### Класс IOrder
+Работает с данными заказа, хранит метод оплаты, адрес, почту, телефон 
+  Поля
+	- orderMethodPay: methodPayType;
+	- orderAddress: string;
+	- orderIsValid: boolean;
 
 Методы
-- getIUserData (): IUser; - получает данные пользователя.
-- isValidIUserData (data: IUser): boolean; - проверяет валидность данных от пользователя.
+- getIOrderData(): IOrder; - получает данные заказа.
+- isValidIOrderData (data: IOrder): boolean; - проверяет валидность данных от заказа.
 
 ## Представление
 
@@ -179,15 +177,14 @@ export interface IUser {
 В нем есть методы:
 - openPopup - для открытия окна;
 - closePopup - для закрытия окна по мисклику, по кнопке и по клавише Esc;
-- constructor(template: HTMLTemplateElement, events: IEvents) - констурктор для инициилизации.
+- constructor(content: HTMLElement, events: IEvents) - констурктор для инициилизации.
 
 Поля
-- popup: HTMLElement - модальное окно
-- templatePopup: HTMLTemplateElement - шаблон
-- events: IEvents - брокер событий
+- content: HTMLElement - контент передаваемый в модалку
+- events: IEvents - брокер событий инициализирует событие
 
 
-### Класс popupProduct
+### Класс ProductBase
 Содержит все поля для описания товара в модальном окне
 Поля:
 - productName: HTMLElement - блок разметки для названия
@@ -195,18 +192,23 @@ export interface IUser {
 - productDescr: HTMLElement - блок разметки для описания
 - productPrice: HTMLElement - блок разметки для цены
 - productCat: HTMLElement - блок разметки для категории
-- productBtn: HTMLButtonElement - блок разметки для кнопки
+- productBtn: HTMLButtonElement - кнопка покупки
+- events: IEvents - брокер событий
 
-Методы:
-- popupProductOpen(dataProd: { nameProd: string, linkProd: string }): void - заполняет поля модального окна.
-- popupProductClose(): void - очищает поля модального окна.
+Методы
+- addEventListeners(): void - устанавливает слушатель на кнопку
 
-### Класс Product 
-Отображает блок товара
-Поля класса содержат элементы разметки элементов карточки. Конструктор, кроме темплейта принимает экземпляр `EventEmitter` для инициации событий.\
+### Класс BasketProducts
+Реализует отображение карточки товара в корзине.
+constructor(template: HTMLTemplateElement, events: IEvents) 
 
-Методы:
-- renderProd(productData: IProduct): HTMLElement - Заполняет атрибуты элементов карточки. 
+_title: HTMLElement - элемент для наименования
+_price: HTMLElement - элемент для вывода цены
+events: IEvents - брокер событий
+Методы
+
+addEventListeners(): void - устанавливает слушатель на кнопку удаления из корзины
+
 ### Класс popupForm
 Содержит все поля для описания формы в модальном окне
 
