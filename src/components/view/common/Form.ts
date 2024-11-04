@@ -1,13 +1,13 @@
-import { IEvents } from '../presenter/events';
-import { ensureElement } from '../../utils/utils';
-import { Component } from '../base/Component';
+import { IEvents } from '../../presenter/events';
+import { ensureElement } from '../../../utils/utils';
+import { App } from '../../base/App';
 
 export interface IFormState {
 	valid: boolean;
 	errors: string[];
 }
 
-export abstract class Form<T extends object> extends Component<IFormState> {
+export abstract class Form<T extends object> extends App<IFormState> {
 	protected _submit: HTMLButtonElement;
 	protected _errors: HTMLElement;
 

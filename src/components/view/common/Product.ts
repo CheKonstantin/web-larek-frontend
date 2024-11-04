@@ -1,6 +1,6 @@
-import { IEvents } from '../presenter/events';
-import { ensureElement, formatNumber } from '../../utils/utils';
-import { Component } from '../base/Component';
+import { IEvents } from '../../presenter/events';
+import { ensureElement, formatNumber } from '../../../utils/utils';
+import { App } from '../../base/App';
 
 export interface IProductView {
 	id: string;
@@ -12,7 +12,7 @@ export interface IProductView {
 	inCart: boolean;
 }
 
-export abstract class ProductBase extends Component<IProductView> {
+export abstract class Product extends App<IProductView> {
 	protected _title: HTMLElement;
 	protected _price: HTMLElement;
 	protected _button: HTMLButtonElement;

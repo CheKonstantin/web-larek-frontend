@@ -186,13 +186,13 @@ export interface IUser {
 
 Родительский класс для всех компонентов, в нем лежит метод render
 
-### Класс Popup
+### Класс Modal
 
 Класс для модальных окон.
 В нем есть методы:
 
-- openPopup - для открытия окна;
-- closePopup - для закрытия окна по мисклику, по кнопке и по клавише Esc;
+- openModal - для открытия окна;
+- closeModal - для закрытия окна по мисклику, по кнопке и по клавише Esc;
 - constructor(content: HTMLElement, events: IEvents) - констурктор для инициилизации.
 
 Поля
@@ -222,48 +222,54 @@ export interface IUser {
 Реализует отображение карточки товара в корзине.
 constructor(template: HTMLTemplateElement, events: IEvents)
 
-\_title: HTMLElement - элемент для наименования
-\_price: HTMLElement - элемент для вывода цены
-events: IEvents - брокер событий
-Методы
+Поля:
+
+- title: HTMLElement - элемент для наименования
+- price: HTMLElement - элемент для вывода цены
+- btnRemove: HTMLButtonElement
+- events: IEvents - брокер событий
+  Методы
 
 addEventListeners(): void - устанавливает слушатель на кнопку удаления из корзины
 
-### Класс popupForm
+### Класс Form
 
 Содержит все поля для описания формы в модальном окне
+При сабмите инициирует событие передавая в него объект с данными из полей ввода формы. При изменении данных в полях ввода инициирует событие изменения данных. Предоставляет методы для отображения ошибок и управления активностью кнопки.\
 
-Поля:
+Поля класса:
 
-- submitBtn: HTMLButtonElement - Кнопка подтверждения
-- \_form: HTMLFormElement - форма
-- inputsForm: NodeListOf<HTMLInputElement> - все поля формы
-- errorsForm: Record<string, HTMLElement> - все ошибки в полях формы
+- \_submit: HTMLButtonElement - Кнопка подтверждения
+- \_errors: HTMLElement - объект хранящий элемент для вывода ошибок под полями формы
 
 Методы:
 
-- setInputData(data: Record<string, string>): void - заполняет поля формы
-- setErrorData(data: { field: string, value: string, validInformation: string }): void - устанавливает текст ошибки полей
-- showError (field: string, errorMessage: string): void - отображает ошибку поля
-- hideError (field: string): void - очишает ошибку
-- clearForm (): void - очишает форму
-- get form: HTMLElement - получаем форму
-- setStateBtn(isValid: boolean): void - изменяет состояние кнопки
-- getInputsData(): Record<string, string> - возвращает данные поля в виде объекта
+- set valid(value: boolean) - изменяет активность кнопки подтверждения
+- set errors(value: string) - устанавливает текст ошибки
+- onInputChange(field: keyof T, value: string) - инициирует событие передавая в него объект с данными из полей ввода формы
 
-#### Класс popupSuccess
+### Класс Contacts
+
+Наследует все поля и методы класса Form. Параметры конструктора
+container: HTMLFormElement, events: IEvents
+
+сеттер contactsPhone устанавливает значение в инпут телефона.
+сеттер contactsEmail устанавливает значение в инпут почты.
+сеттер contactsIsValid дизэйблит кнопку если поле введено не верно.
+
+### Класс Success
 
 Содержит поля для модалки успешного заказа
 Поля:
 
-- submitBtn: HTMLButtonElement - Кнопка подтвердить
+- closeBtn: HTMLButtonElement - Кнопка закрытия
 - summ: HTMLElement - отображает полную стоимость заказа
 
 ### Класс ProductDisplay
 
 Отвечает за отображение каталога товаров на главной странице.
-
-- **constructor(protected container: HTMLElement)**: В конструкторе передаётся элемент контейнера, в котором будет размещён каталог товаров. В методе **show** принимается массив элементов разметки товаров, который выводится в указанном контейнере.
+constructor(protected container: HTMLElement, events: IEvents)
+В конструкторе передаётся элемент контейнера, в котором будет размещён каталог товаров. В методе **show** принимается массив элементов разметки товаров, который выводится в указанном контейнере.
 
 ### Класс MainPage
 

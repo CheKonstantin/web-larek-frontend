@@ -1,5 +1,5 @@
 import { IOrderData, IProductData } from '../../types';
-import { Api } from './api';
+import { Api } from './Api';
 import { API_URL, CDN_URL, settings } from '../../utils/constants';
 
 export type OrderResponse = {

@@ -32,20 +32,3 @@ export interface IContactsData {
 	contactsEmail: string;
 	contactsIsValid: boolean;
 }
-
-export interface IModal {
-	content: HTMLElement;
-}
-
-export interface ISuccess {
-	total: number;
-}
-
-export type IProductInCatalog = Pick<
-	IProductData,
-	'productCat' | 'productName' | 'productSrc' | 'productPrice'
->;
-export type IProductInBasket = Pick<
-	IProductData,
-	'productId' | 'productName' | 'productPrice'
->;

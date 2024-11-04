@@ -1,7 +1,7 @@
 import { IEvents } from '../presenter/events';
 import { IOrderData } from '../../types/index';
 import { ensureAllElements } from '../../utils/utils';
-import { Form } from '../common/Form';
+import { Form } from '../view/common/Form';
 
 export class OrderData extends Form<IOrderData> {
 	protected _paymentBtns: HTMLButtonElement[];

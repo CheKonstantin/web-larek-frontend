@@ -1,8 +1,8 @@
-import { IEvents } from '../presenter/events';
+import { IEvents } from '../../components/presenter/events';
 import { IContactsData } from '../../types';
-import { Form } from '../view/common/Form';
+import { Form } from './common/Form';
 
-export class ContactsData extends Form<IContactsData> {
+export class Contacts extends Form<IContactsData> {
 	constructor(container: HTMLFormElement, events: IEvents) {
 		super(container, events);
 	}
