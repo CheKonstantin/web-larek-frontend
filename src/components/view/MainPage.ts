@@ -8,7 +8,7 @@ interface IPage {
 	lock: boolean;
 }
 
-export class Page extends App<IPage> {
+export class MainPage extends App<IPage> {
 	protected _counter: HTMLElement;
 	protected _basketBtn: HTMLButtonElement;
 	protected _store: HTMLElement;

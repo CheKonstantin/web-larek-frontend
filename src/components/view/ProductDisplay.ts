@@ -18,7 +18,7 @@ export class ProductDisplay extends Product {
 
 	addEventListeners() {
 		this.container.addEventListener('click', () =>
-			this.events.emit<{ id: string }>('product:click', { id: this.id })
+			this.events.emit<{ id: string }>('product:select', { id: this.id })
 		);
 	}
 }

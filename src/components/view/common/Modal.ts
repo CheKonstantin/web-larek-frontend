@@ -12,6 +12,11 @@ export class Modal extends App<IModalData> {
 
 	constructor(container: HTMLElement, protected events: IEvents) {
 		super(container);
+		this._closeButton = ensureElement<HTMLButtonElement>(
+			'.modal__close',
+			container
+		);
+		this._content = ensureElement<HTMLElement>('.modal__content', container);
 
 		this._closeButton.addEventListener('click', this.closeModal.bind(this));
 		this._content.addEventListener('click', (evt) => evt.stopPropagation());
@@ -20,12 +25,6 @@ export class Modal extends App<IModalData> {
 				this.closeModal();
 			}
 		});
-
-		this._closeButton = ensureElement<HTMLButtonElement>(
-			'.modal__close',
-			container
-		);
-		this._content = ensureElement<HTMLElement>('.modal__content', container);
 	}
 
 	set content(value: HTMLElement) {

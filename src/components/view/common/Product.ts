@@ -4,10 +4,10 @@ import { App } from '../../base/App';
 
 export interface IProductView {
 	id: string;
+	category: string;
+	title: string;
 	description: string;
 	image: string;
-	title: string;
-	category: string;
 	price: number;
 	inCart: boolean;
 }

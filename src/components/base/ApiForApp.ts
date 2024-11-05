@@ -23,7 +23,7 @@ export class MainApi extends Api {
 	getProduct(id: string): Promise<IProductData> {
 		return this.get(`/product/${id}`).then((item: IProductData) => ({
 			...item,
-			image: this.cdn + item.productSrc,
+			image: this.cdn + item.image,
 		}));
 	}
 
@@ -31,7 +31,7 @@ export class MainApi extends Api {
 		return this.get('/product/').then((data: ProductsResponse<IProductData>) =>
 			data.items.map((item: IProductData) => ({
 				...item,
-				image: this.cdn + item.productSrc,
+				image: this.cdn + item.image,
 			}))
 		);
 	}

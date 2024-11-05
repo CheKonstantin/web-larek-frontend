@@ -19,6 +19,6 @@ export class ProductsData implements IPageMainData {
 	}
 
 	getProduct(productId: string) {
-		return this.store.find((item) => item.productId === productId);
+		return this.store.find((item) => item.id === productId);
 	}
 }

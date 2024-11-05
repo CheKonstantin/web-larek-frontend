@@ -1,15 +1,15 @@
+export interface IProductData {
+	id: string;
+	category: string;
+	title: string;
+	description: string;
+	image: string;
+	price: number;
+}
+
 export interface IPageMainData {
 	pageStore: IProductData[];
 	getProduct(id: string): IProductData;
-}
-
-export interface IProductData {
-	productId: string;
-	productCat: string;
-	productName: string;
-	productDescr: string;
-	productSrc: string;
-	productPrice: number;
 }
 
 export interface IBasketProductsData {
@@ -19,6 +19,7 @@ export interface IBasketProductsData {
 	basketDelProd(prodId: string): void;
 	basketClear(): void;
 	getSummPrice(basketSumPrice: number): number;
+	inBasket(id: string): boolean;
 }
 
 export interface IOrderData {

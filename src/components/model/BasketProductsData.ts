@@ -14,9 +14,7 @@ export class BasketProductsData implements IBasketProductsData {
 	}
 
 	basketGetProd() {
-		return this._basketProducts.filter(
-			(product) => product.productPrice !== null
-		);
+		return this._basketProducts.filter((product) => product.price !== null);
 	}
 
 	basketAddProd(product: IProductData): void {
@@ -26,7 +24,7 @@ export class BasketProductsData implements IBasketProductsData {
 
 	basketDelProd(productId: string): void {
 		this._basketProducts = this._basketProducts.filter(
-			(product) => product.productId !== productId
+			(product) => product.id !== productId
 		);
 		this.events.emit('basket:changed');
 	}
@@ -36,12 +34,26 @@ export class BasketProductsData implements IBasketProductsData {
 		this.events.emit('basket:changed');
 	}
 
+	inBasket(id: string): boolean {
+		if (this._basketProducts) {
+			console.log(this._basketProducts);
+
+			return true;
+		}
+
+		// return this._basketProducts.some((product) => {
+		// 	console.log(product);
+
+		// 	return product.id === id;
+		// });
+	}
+
 	getSummPrice(): number {
 		return this._basketProducts.reduce((total, product) => {
-			if (product.productPrice === null) {
+			if (product.price === null) {
 				return total;
 			}
-			return (total += product.productPrice);
+			return (total += product.price);
 		}, 0);
 	}
 }
