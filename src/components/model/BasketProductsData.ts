@@ -7,6 +7,7 @@ export class BasketProductsData implements IBasketProductsData {
 
 	constructor(events: IEvents) {
 		this.events = events;
+		this._basketProducts = [];
 	}
 
 	get basketProducts() {
@@ -19,7 +20,8 @@ export class BasketProductsData implements IBasketProductsData {
 
 	basketAddProd(product: IProductData): void {
 		this._basketProducts = [product, ...this._basketProducts];
-		this.events.emit('basket:changed');
+		// this.events.emit('basket:changed');
+		console.log(product);
 	}
 
 	basketDelProd(productId: string): void {
@@ -27,6 +29,14 @@ export class BasketProductsData implements IBasketProductsData {
 			(product) => product.id !== productId
 		);
 		this.events.emit('basket:changed');
+	}
+
+	isEmptyBasket(): boolean {
+		return this.getSummPrice() === 0;
+	}
+
+	getNumber() {
+		return this._basketProducts.length;
 	}
 
 	basketClear(): void {
