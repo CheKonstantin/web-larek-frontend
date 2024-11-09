@@ -20,7 +20,7 @@ export class BasketProductsData implements IBasketProductsData {
 
 	basketAddProd(product: IProductData): void {
 		this._basketProducts = [product, ...this._basketProducts];
-		// this.events.emit('basket:changed');
+		this.events.emit('basket:changed');
 		console.log(product);
 	}
 

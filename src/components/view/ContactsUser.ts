@@ -1,8 +1,8 @@
-import { IEvents } from '../../components/presenter/events';
+import { IEvents } from '../presenter/events';
 import { IContactsData } from '../../types';
 import { Form } from './common/Form';
 
-export class Contacts extends Form<IContactsData> {
+export class ContactsUser extends Form<IContactsData> {
 	constructor(container: HTMLFormElement, events: IEvents) {
 		super(container, events);
 	}
@@ -17,7 +17,7 @@ export class Contacts extends Form<IContactsData> {
 			value;
 	}
 
-	set contactsIsValid(value: boolean) {
+	set valid(value: boolean) {
 		this.setDisabled(this._submit, !value);
 	}
 }

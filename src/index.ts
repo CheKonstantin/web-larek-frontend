@@ -6,16 +6,21 @@ import { cloneTemplate, ensureElement } from './utils/utils';
 import { ProductDisplay } from './components/view/ProductDisplay';
 import { MainPage } from './components/view/MainPage';
 import { BasketProductsData } from './components/model/BasketProductsData';
-import { IProductData } from './types';
+import { IProductData, OrderMethodPay, OrderContact } from './types';
 import { ProductModal } from './components/view/ProductModal';
 import { Modal } from './components/view/common/Modal';
 import { Basket } from './components/view/Basket';
 import { BasketProducts } from './components/view/BasketProducts';
+import { OrderData } from './components/model/OrderData';
+import { UserData } from './components/model/UserData';
+import { ContactsUser } from './components/view/ContactsUser';
 
 const productCatalog = ensureElement<HTMLTemplateElement>('#card-catalog');
 const productModal = ensureElement<HTMLTemplateElement>('#card-preview');
 const basketTemplate = ensureElement<HTMLTemplateElement>('#basket');
 const productBasket = ensureElement<HTMLTemplateElement>('#card-basket');
+const orderTemplate = ensureElement<HTMLTemplateElement>('#order');
+const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
 
 const eventEmitter = new EventEmitter();
 const productsData = new ProductsData(eventEmitter);
@@ -26,7 +31,12 @@ const productModalData = new ProductModal(
 	cloneTemplate(productModal),
 	eventEmitter
 );
-
+const userData = new UserData(eventEmitter);
+const order = new OrderData(cloneTemplate(orderTemplate), eventEmitter);
+const contacts = new ContactsUser(
+	cloneTemplate(contactsTemplate),
+	eventEmitter
+);
 const modal = new Modal(
 	ensureElement<HTMLElement>('#modal-container'),
 	eventEmitter
@@ -70,12 +80,13 @@ eventEmitter.on('product:buy', (data: { id: string }) => {
 	modal.closeModal();
 });
 
-eventEmitter.on('cart:changed', () => {
+eventEmitter.on('basket:changed', () => {
 	const productsinCartArray = basketProductsData.basketProducts.map((product) =>
 		new BasketProducts(cloneTemplate(productBasket), eventEmitter).render(
 			product
 		)
 	);
+
 	basket.render({
 		products: productsinCartArray,
 		total: basketProductsData.getSummPrice(),
@@ -89,6 +100,47 @@ eventEmitter.on('basket:open', () => {
 	modal.render({
 		content: basket.render({
 			isEmpty: basketProductsData.isEmptyBasket(),
+		}),
+	});
+});
+
+eventEmitter.on('basketProduct:delete', (data: { id: string }) => {
+	basketProductsData.basketDelProd(data.id);
+});
+
+eventEmitter.on('order:open', () => {
+	modal.render({
+		content: order.render({
+			payment: '',
+			address: '',
+			valid: false,
+			errors: [],
+		}),
+	});
+});
+
+eventEmitter.on(
+	/^order\..*:change/,
+	(data: { field: keyof OrderMethodPay; value: string }) => {
+		userData.setOrderField(data.field, data.value);
+	}
+);
+
+eventEmitter.on('contacts:change', (errors: Partial<OrderContact>) => {
+	const { email, phone } = errors;
+	contacts.valid = !phone && !email;
+	contacts.errors = Object.values({ email, phone })
+		.filter((i) => !!i)
+		.join('; ');
+});
+
+eventEmitter.on('order:submit', () => {
+	modal.render({
+		content: contacts.render({
+			contactsPhone: '',
+			contactsEmail: '',
+			valid: false,
+			errors: [],
 		}),
 	});
 });

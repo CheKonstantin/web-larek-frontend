@@ -23,9 +23,22 @@ export interface IBasketProductsData {
 }
 
 export interface IOrderData {
-	orderMethodPay: string;
-	orderAddress: string;
-	orderIsValid: boolean;
+	payment: string;
+	email: string;
+	phone: string;
+	address: string;
+	total: number;
+	items: string[];
+}
+
+export type OrderMethodPay = Pick<IOrderData, 'payment' | 'address'>;
+
+export type OrderContact = Pick<IOrderData, 'email' | 'phone'>;
+
+export type FormErrors = Partial<Record<keyof IOrderData, string>>;
+
+export interface IUserData {
+	clientData: OrderMethodPay & OrderContact;
 }
 
 export interface IContactsData {

@@ -13,7 +13,7 @@ export class OrderData extends Form<IOrderData> {
 		this._paymentBtns.forEach((button) => {
 			button.addEventListener('click', () => {
 				this.orderMethodPay = button.name;
-				this.onInputChange('orderMethodPay', button.name);
+				this.onInputChange('payment', button.name);
 			});
 		});
 	}
@@ -29,7 +29,7 @@ export class OrderData extends Form<IOrderData> {
 			value;
 	}
 
-	set orderIsValid(value: boolean) {
+	set valid(value: boolean) {
 		this.setDisabled(this._submit, !value);
 	}
 }
