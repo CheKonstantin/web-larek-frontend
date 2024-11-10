@@ -14,6 +14,7 @@ import { BasketProducts } from './components/view/BasketProducts';
 import { OrderData } from './components/model/OrderData';
 import { UserData } from './components/model/UserData';
 import { ContactsUser } from './components/view/ContactsUser';
+import { Success } from './components/view/Success';
 
 const productCatalog = ensureElement<HTMLTemplateElement>('#card-catalog');
 const productModal = ensureElement<HTMLTemplateElement>('#card-preview');
@@ -21,6 +22,7 @@ const basketTemplate = ensureElement<HTMLTemplateElement>('#basket');
 const productBasket = ensureElement<HTMLTemplateElement>('#card-basket');
 const orderTemplate = ensureElement<HTMLTemplateElement>('#order');
 const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
+const sucsessTemplate = ensureElement<HTMLTemplateElement>('#success');
 
 const eventEmitter = new EventEmitter();
 const productsData = new ProductsData(eventEmitter);
@@ -41,6 +43,8 @@ const modal = new Modal(
 	ensureElement<HTMLElement>('#modal-container'),
 	eventEmitter
 );
+
+const success = new Success(cloneTemplate(sucsessTemplate), eventEmitter);
 
 eventEmitter.on('products:set', () => {
 	const productsArray = productsData.pageStore.map((pageStoreItem) =>
@@ -126,6 +130,14 @@ eventEmitter.on(
 	}
 );
 
+eventEmitter.on('orderForm:change', (errors: Partial<OrderMethodPay>) => {
+	const { address, payment } = errors;
+	order.valid = !payment && !address;
+	order.errors = Object.values({ payment, address })
+		.filter((i) => !!i)
+		.join('; ');
+});
+
 eventEmitter.on('contacts:change', (errors: Partial<OrderContact>) => {
 	const { email, phone } = errors;
 	contacts.valid = !phone && !email;
@@ -143,6 +155,55 @@ eventEmitter.on('order:submit', () => {
 			errors: [],
 		}),
 	});
+});
+
+eventEmitter.on(
+	/^contacts\..*:change/,
+	(data: { field: keyof OrderContact; value: string }) => {
+		userData.setContactsField(data.field, data.value);
+	}
+);
+
+eventEmitter.on('contacts:change', (errors: Partial<OrderContact>) => {
+	console.log('ssss');
+
+	const { email, phone } = errors;
+	contacts.valid = !phone && !email;
+	contacts.errors = Object.values({ email, phone })
+		.filter((i) => !!i)
+		.join('; ');
+});
+
+eventEmitter.on('contacts:submit', () => {
+	(async () => {
+		try {
+			const order = await ApiForApp.placeOrder({
+				...userData.clientData,
+				items: basketProductsData.basketGetProd.map((product) => product.id),
+				total: basketProductsData.getSummPrice(),
+			});
+			basketProductsData.isEmptyBasket();
+			modal.render({
+				content: success.render({
+					total: order.total,
+				}),
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	})();
+});
+
+eventEmitter.on('sucsess:submit', () => {
+	modal.closeModal();
+});
+
+eventEmitter.on('modal:open', () => {
+	page.lock = true;
+});
+
+eventEmitter.on('modal:close', () => {
+	page.lock = false;
 });
 
 (async () => {

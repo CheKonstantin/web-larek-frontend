@@ -14,7 +14,7 @@ export interface IPageMainData {
 
 export interface IBasketProductsData {
 	basketProducts: IProductData[];
-	basketGetProd(): IProductData[];
+	basketGetProd: IProductData[];
 	basketAddProd(prod: IProductData): void;
 	basketDelProd(prodId: string): void;
 	basketClear(): void;

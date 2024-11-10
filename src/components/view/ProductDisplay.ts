@@ -21,4 +21,23 @@ export class ProductDisplay extends Product {
 			this.events.emit<{ id: string }>('product:select', { id: this.id })
 		);
 	}
+
+	CategoryProd: { [key: string]: string } = {
+		'софт-скил': 'card__category_soft',
+		'хард-скил': 'card__category_hard',
+		дополнительное: 'card__category_additional',
+		другое: 'card__category_other',
+		кнопка: 'card__category_button',
+	};
+
+	set category(value: string) {
+		this.setText(this._category, value);
+		if (this._category) {
+			this.toggleClass(this._category, this.CategoryProd[value], true);
+		}
+	}
+
+	set image(value: string) {
+		this.setImage(this._image, value);
+	}
 }

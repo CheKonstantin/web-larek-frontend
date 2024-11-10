@@ -27,7 +27,6 @@ export class UserData implements IUserData {
 
 	setOrderField(field: keyof OrderMethodPay, value: string) {
 		this._clientData[field] = value;
-
 		if (this.validateOrder()) {
 			return;
 		}
@@ -35,12 +34,16 @@ export class UserData implements IUserData {
 
 	validateOrder() {
 		const errors: typeof this.formErrors = {};
+
 		if (!this._clientData.payment) {
 			errors.payment = 'Установите способ оплаты';
 		}
 		if (!this._clientData.address) {
 			errors.address = 'Укажите ваш адрес';
 		}
+
+		console.log(errors);
+
 		this.formErrors = errors;
 		this.events.emit('orderForm:change', this.formErrors);
 		return Object.keys(errors).length === 0;
@@ -60,7 +63,7 @@ export class UserData implements IUserData {
 			errors.email = 'Укажите ваш email';
 		}
 		if (!this._clientData.phone) {
-			errors.phone = 'Укажите ваш адрес';
+			errors.phone = 'Укажите ваш телефон';
 		}
 		this.formErrors = errors;
 		this.events.emit('contacts:change', this.formErrors);

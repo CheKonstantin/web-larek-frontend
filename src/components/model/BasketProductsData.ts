@@ -14,7 +14,7 @@ export class BasketProductsData implements IBasketProductsData {
 		return this._basketProducts;
 	}
 
-	basketGetProd() {
+	get basketGetProd() {
 		return this._basketProducts.filter((product) => product.price !== null);
 	}
 
