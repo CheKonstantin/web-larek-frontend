@@ -49,56 +49,57 @@ yarn build
 
 ## Описание типов данных
 
-Алиас для способа оплаты
-
-```
-export type methodPayType = 'online' | 'recept';
-```
-
 Главная старница
 
 ```
-export interface IPageMain {
-	pageStore: IProduct[];
-	pageProdPreview: string | null;
+export interface IPageMainData {
+	pageStore: IProductData[];
+	getProduct(id: string): IProductData;
 }
 ```
 
 Продукт
 
 ```
-export interface IProduct {
-	productId: string;
-	productCat: string;
-	productName: string;
-	productDescr: string;
-	productSrc: string;
-	productPrice: number;
+export interface IProductData {
+	id: string;
+	category: string;
+	title: string;
+	description: string;
+	image: string;
+	price: number;
 }
 ```
 
 Корзина
 
 ```
-export interface IBoxProducts {
-	boxProducts: IProduct[];
-	boxSumPrice: number;
-    boxGetProd(): IProduct[];
-	boxAddProd(prod: IProduct): void;
-	boxDelProd(prodId: string): void;
-	boxClear(): void;
+export interface IBasketProductsData {
+	basketProducts: IProductData[];
+	basketGetProd: IProductData[];
+	basketAddProd(prod: IProductData): void;
+	basketDelProd(prodId: string): void;
+	basketClear(): void;
+	getSummPrice(basketSumPrice: number): number;
+	inBasket(id: string): boolean;
 }
 ```
 
 Пользователь
 
 ```
-export interface IUser {
-	userMethodPay: methodPayType;
-	userAddress: string;
-	userValidAddress: boolean;
-    userPhone: string;
-    userEmail: string;
+export interface IUserData {
+	clientData: OrderMethodPay & OrderContact;
+}
+```
+
+Контакты
+
+```
+export interface IContactsData {
+	contactsPhone: string;
+	contactsEmail: string;
+	contactsIsValid: boolean;
 }
 ```
 
@@ -136,82 +137,110 @@ export interface IUser {
 
 ## Данные
 
-### Класс PageMainData
+### Класс ProductsData
 
-Нужен для работы с объектами товаров
-Включает в себя массив карточек, данные для отображения модалки и экземпляр класса для инициации событий.
+ProductsData нужен для работы с объектами товаров реализует поля и методы интерфейса IPageMainData.
+В конструкторе добавлен брокер событий.
+Возвращает массив продуктов и может вернуть конкретный товар.
 
 Поля
 
-- pageStore: IProduct[];
-- pageProdPreview: string | null;
+- set pageStore(products: IProductData[])
+- get pageStore()
 - events: IEvents
 
 Методы:
 
-- getProducts(): IProduct[] - добавляет массив товаров
-- addProduct(product: IProduct): void - добавляет товар
-- deleteProduct(productId: string): void - удаляет товар
+- getProduct(productId: string) - добавляет массив товаров
 
 ### Класс BasketProductsData
 
+реализует поля и методы интерфейса IBasketProductsData
 Принимает карточки для дальнейшего оформления и работает с ними
 
 Поля
 
-- basketProducts: IProduct[];
-- basketSumPrice: number;
+- get basketProducts()
+- get basketGetProd()
 
 Методы
 
-- basketGetProd(): IProduct[]; - Инициализирует массив продуктов.
-- basketAddProd(prod: IProduct): void; - Добавляет продукт.
-- basketDelProd(prodId: string): void; - Удаляет продукт.
-- basketClear(): void; - Очищает корзину.
+- basketAddProd(product: IProductData): void - Добавляет продукт.
+- basketDelProd(productId: string): void - Удаляет продукт.
+- isEmptyBasket(): boolean - устанавливает нулевую стоимость товаров в корзине.
+- getNumber(): void; - узнает кол-во товаров в корзине.
+- basketClear(): void - очищает корзину
+- inBasket(id: string): boolean - проверяет на наличие товара
+- getSummPrice(): number - считает общую стоимость товаров в корзине
 
 ### Класс OrderData
 
 Работает с данными заказа, хранит метод оплаты, адрес и проверяет валидность полей ввода
-Поля - orderMethodPay: methodPayType; - orderAddress: string; - orderIsValid: boolean;
+constructor(container: HTMLFormElement, events: IEvents)
+
+Поля
+
+- protected \_paymentBtns: HTMLButtonElement[];
+- set orderMethodPay(name: string)
+- set orderAddress(value: string)
+- set valid(value: boolean)
 
 ### Класс ContactsData
 
 Работает с данными от пользователя, хранит почту, телефон
 и проверяет валидность полей ввода.
-Поля - orderMethodPay: methodPayType; - orderAddress: string; - orderIsValid: boolean;
+Поля
+
+- set contactsPhone(value: string)
+- set contactsEmail(value: string)
+- set contactsIsValid(value: boolean)
 
 ## Представление
 
 ### Класс App
 
-Родительский класс для всех компонентов, в нем лежит метод render
+Родительский класс для всех компонентов.
+Он работает с версткой сайта.
+protected constructor(protected readonly container: HTMLElement)
+Методы
+
+- toggleClass() - переключает класс
+- setDisabled() - меняет статус блокировки
+- setText() - устанавливает текстовое содержимое
+- setHidden() - скрывает элемент
+- setVisible() - показывает элемент
+- setImage() - устанавливает картинку
+- render() - отризовывает DOM-элемент
 
 ### Класс Modal
 
 Класс для модальных окон.
+Поля
+
+- protected \_closeButton: HTMLButtonElement;
+- protected \_content: HTMLElement;
+- set content(value: HTMLElement)
+
 В нем есть методы:
 
 - openModal - для открытия окна;
 - closeModal - для закрытия окна по мисклику, по кнопке и по клавише Esc;
-- constructor(content: HTMLElement, events: IEvents) - констурктор для инициилизации.
+- render(data: IModalData) - для отрисовки окна
 
-Поля
-
-- content: HTMLElement - контент передаваемый в модалку
-- events: IEvents - брокер событий инициализирует событие
-
-### Класс ProductBase
+### Класс Product
 
 Содержит все поля для описания товара в модальном окне
+
 Поля:
 
-- productName: HTMLElement - блок разметки для названия
-- productSrc: HTMLImageElement - блок разметки для картинки
-- productDescr: HTMLElement - блок разметки для описания
-- productPrice: HTMLElement - блок разметки для цены
-- productCat: HTMLElement - блок разметки для категории
-- productBtn: HTMLButtonElement - кнопка покупки
-- events: IEvents - брокер событий
+- protected \_title: HTMLElement;
+- protected \_price: HTMLElement;
+- protected \_button: HTMLButtonElement;
+- protected events: IEvents;
+- set id()
+- get id()
+- set title(value: string)
+- set price(value: number)
 
 Методы
 
@@ -224,13 +253,14 @@ constructor(template: HTMLTemplateElement, events: IEvents)
 
 Поля:
 
-- title: HTMLElement - элемент для наименования
-- price: HTMLElement - элемент для вывода цены
-- btnRemove: HTMLButtonElement
-- events: IEvents - брокер событий
+- protected \_button: HTMLButtonElement;
+- protected \_title: HTMLElement;
+- protected \_price: HTMLElement;
+- protected events: IEvents;
+
   Методы
 
-addEventListeners(): void - устанавливает слушатель на кнопку удаления из корзины
+- addEventListeners(): void - устанавливает слушатель на кнопку удаления из корзины
 
 ### Класс Form
 

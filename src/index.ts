@@ -55,7 +55,6 @@ eventEmitter.on('products:set', () => {
 
 	page.render({
 		products: productsArray,
-		// counter: basketProductsData.getSummPrice(),
 	});
 });
 
@@ -71,8 +70,6 @@ eventEmitter.on('product:selected', (preview: IProductData) => {
 		...preview,
 		inCart: basketProductsData.inBasket(preview.id),
 	});
-
-	console.log(preview.id);
 
 	modal.render({ content: previewElement });
 });
@@ -165,8 +162,6 @@ eventEmitter.on(
 );
 
 eventEmitter.on('contacts:change', (errors: Partial<OrderContact>) => {
-	console.log('ssss');
-
 	const { email, phone } = errors;
 	contacts.valid = !phone && !email;
 	contacts.errors = Object.values({ email, phone })

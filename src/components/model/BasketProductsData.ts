@@ -21,7 +21,6 @@ export class BasketProductsData implements IBasketProductsData {
 	basketAddProd(product: IProductData): void {
 		this._basketProducts = [product, ...this._basketProducts];
 		this.events.emit('basket:changed');
-		console.log(product);
 	}
 
 	basketDelProd(productId: string): void {
@@ -45,17 +44,9 @@ export class BasketProductsData implements IBasketProductsData {
 	}
 
 	inBasket(id: string): boolean {
-		if (this._basketProducts) {
-			console.log(this._basketProducts);
-
-			return true;
-		}
-
-		// return this._basketProducts.some((product) => {
-		// 	console.log(product);
-
-		// 	return product.id === id;
-		// });
+		return this._basketProducts.some((product) => {
+			return product.id === id;
+		});
 	}
 
 	getSummPrice(): number {
