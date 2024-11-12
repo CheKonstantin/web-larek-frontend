@@ -278,41 +278,58 @@ constructor(template: HTMLTemplateElement, events: IEvents)
 - set errors(value: string) - устанавливает текст ошибки
 - onInputChange(field: keyof T, value: string) - инициирует событие передавая в него объект с данными из полей ввода формы
 
-### Класс Contacts
+### Класс ContactsUser
 
 Наследует все поля и методы класса Form. Параметры конструктора
 container: HTMLFormElement, events: IEvents
 
 сеттер contactsPhone устанавливает значение в инпут телефона.
 сеттер contactsEmail устанавливает значение в инпут почты.
-сеттер contactsIsValid дизэйблит кнопку если поле введено не верно.
+сеттер valid дизэйблит кнопку если поле введено не верно.
 
 ### Класс Success
 
 Содержит поля для модалки успешного заказа
 Поля:
 
-- closeBtn: HTMLButtonElement - Кнопка закрытия
-- summ: HTMLElement - отображает полную стоимость заказа
+- protected \_closeBtn: HTMLButtonElement; - Кнопка закрытия
+- protected \_summ: HTMLElement; - отображает полную стоимость заказа
+- protected events: IEvents; - брокер событий
+- set total(total: number) - выводит текст с полной стоимостью товаров
 
 ### Класс ProductDisplay
 
 Отвечает за отображение каталога товаров на главной странице.
 constructor(protected container: HTMLElement, events: IEvents)
-В конструкторе передаётся элемент контейнера, в котором будет размещён каталог товаров. В методе **addEventListeners** принимается id нажатой карточки товара и инициализация метода emit
+В конструкторе передаётся элемент контейнера, в котором будет размещён каталог товаров.
+
+Поля
+
+- protected \_title: HTMLElement;
+- protected \_category: HTMLElement;
+- protected \_image: HTMLImageElement;
+- protected \_price: HTMLElement;
+- protected events: IEvents;
+
+Методы
+
+- addEventListeners()- принимается id нажатой карточки товара и инициализация метода emit
+- CategoryProd: { [key: string]: string } - хранит категории товаров
+- set category(value: string) - устанавливает категорию
+- set image(value: string) - устанавливает картинку
 
 ### Класс MainPage
 
-    constructor(container: HTMLElement, protected events: IEvents)
-
-    поля
-
-- counter: HTMLElement
-- basketBtn: HTMLButtonElement
-- store: HTMLElement
-- pageWrapper: HTMLElement
-
 Отвечает за отображение главной страницы сайта.
+Сonstructor(container: HTMLElement, protected events: IEvents)
+
+    Поля
+
+- protected \_counter: HTMLElement;
+- protected \_basketBtn: HTMLButtonElement;
+- protected \_store: HTMLElement;
+- protected \_parent: HTMLElement;
+
 Сеттер products устанавливает товары на страницу.
 Сеттер counter задает кол-во товаров в корзину.
 Сеттер lock блокирует прокрутку во время открытого товара.
@@ -334,26 +351,15 @@ constructor(protected container: HTMLElement, events: IEvents)
 
 События, связанные с изменением данных (генерируются классами-моделями):
 
-- cart: updated — изменение массива товаров в корзине.
-- client: infoReceived — получение данных о покупателе.
-- product: chosen — обновление товара для отображения в модальном окне.
-- product: resetPreview — сброс данных товара для показа в модальном окне.
-
-События, возникающие при взаимодействии пользователя с интерфейсом:
-
-- product: pick — выбор товара для открытия в модальном окне.
-- cart: show — открытие модального окна с корзиной.
-- product: purchase — выбор товара для покупки (нажатие на кнопку "Купить").
-- productInBasket: remove — удаление товара из корзины.
-- paymentMethod: select — выбор способа оплаты.
-- address: change — изменение данных в адресной форме.
-- email: change — изменение данных в форме электронной почты.
-- phoneNumber: change — изменение данных в форме номера телефона.
-- address: validate — валидация данных в адресной форме.
-- email: validate — валидация данных в форме электронной почты.
-- phoneNumber: validate — валидация данных в форме номера телефона.
-- orderData: confirm — подтверждение отправки данных заказа.
-- clientData: confirm — подтверждение отправки данных о покупателе.
+- basket:changed — изменение массива товаров в корзине.
+- basket:open - открытие корзины
+- products:set - инициилизация товаров на странице
+- orderForm:change - изменения в форме заказа
+- modal:open - открытие модалки
+- modal:close - закрытие модалки
+- order:open - открытие модалки заказа
+- product:buy - покупка товара
+- success:submit - отправка заказа на сервер
 
 После открытия корзины показывается модальное окно со статусом “Корзина”. Данные для этого состояния берутся из модели данных корзины.
 
@@ -364,12 +370,12 @@ constructor(protected container: HTMLElement, events: IEvents)
 - По клику на крестик закрываем модальное окно корзины, возвращаем состояние назад и очищаем формы.
 - Если нажать на иконку урны, товар удаляется из корзины. Проверяется количество товаров: если удаляется последний, закрываем корзину и очищаем формы.
 
-### Класс ApiService
+### Класс ApiForApp
 
-Расширяет родительский класс BaseApi и включает в себя методы для работы с серверной частью.
+Расширяет родительский класс Api и включает в себя методы для работы с серверной частью.
 
 - constructor(cdn: string, baseUrl: string, options?: RequestInit): В конструктор передаются параметры: cdn для загрузки изображений, основной адрес сервера и опциональный объект с заголовками для запросов.
   Методы:
-- fetchProduct(id: string): Promise<IProduct> - метод для получения и обработки данных одного товара.
-- fetchAllProducts(): Promise<IProduct[]> - метод для получения и обработки полного списка товаров.
-- submitOrder(data: IOrder): Promise<OrderResponse>** - принимает объект с данными заказа и вызывает метод **post\*\* родителя.
+- getProduct(id: string): Promise<IProductData> - метод для получения и обработки данных одного товара.
+- getProducts(): Promise<IProductData[]> - метод для получения и обработки полного списка товаров.
+- placeOrder(data: IOrderData): Promise<OrderResponse>** - принимает объект с данными заказа и вызывает метод **post\*\* родителя.
