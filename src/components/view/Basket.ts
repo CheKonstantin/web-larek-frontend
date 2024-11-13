@@ -47,6 +47,7 @@ export class Basket extends App<IBasketView> {
 
 	set index(products: HTMLElement[]) {
 		if (products) {
+			products.reverse();
 			for (let i = 0; i < products.length; i++) {
 				const index = products[i].querySelector('.basket__item-index');
 				index.textContent = `${i + 1}`;

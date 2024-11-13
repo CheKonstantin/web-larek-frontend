@@ -27,7 +27,7 @@ export class ProductModal extends ProductDisplay {
 		this.setText(this._description, value);
 	}
 
-	set inBacket(value: boolean) {
+	set inCart(value: boolean) {
 		this.setDisabled(this._button, value);
 		if (value === true) {
 			this.setText(this._button, 'Уже в корзине');

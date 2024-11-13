@@ -177,7 +177,7 @@ eventEmitter.on('contacts:submit', () => {
 				items: basketProductsData.basketGetProd.map((product) => product.id),
 				total: basketProductsData.getSummPrice(),
 			});
-			basketProductsData.isEmptyBasket();
+			basketProductsData.basketClear();
 			modal.render({
 				content: success.render({
 					total: order.total,
@@ -189,7 +189,7 @@ eventEmitter.on('contacts:submit', () => {
 	})();
 });
 
-eventEmitter.on('sucsess:submit', () => {
+eventEmitter.on('success:submit', () => {
 	modal.closeModal();
 });
 

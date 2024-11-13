@@ -33,7 +33,7 @@ export class ProductDisplay extends Product {
 	set category(value: string) {
 		this.setText(this._category, value);
 		if (this._category) {
-			this.toggleClass(this._category, this.CategoryProd[value], true);
+			this._category.className = `card__category ${this.CategoryProd[value]}`;
 		}
 	}
 
