@@ -1,5 +1,12 @@
 # Проектная работа "Веб-ларек" в рамках курса от Яндекс.Практикум
 
+<img src="https://github.com/user-attachments/assets/d5239a49-e400-4a35-9104-229e495254cc" height="auto" width="32%"/>
+<img src="https://github.com/user-attachments/assets/d93b0de0-4ad2-49b9-9725-3829d0d60d89" height="auto" width="32%"/>
+<img src="https://github.com/user-attachments/assets/b2372271-a4b5-49c7-b511-f2976fb5a342" height="auto" width="32%"/>
+<img src="https://github.com/user-attachments/assets/6821a5d4-1650-4bee-8950-a21579e7050b" height="auto" width="32%"/>
+<img src="https://github.com/user-attachments/assets/e538b305-0d47-4a1b-964a-65658c6c5eed" height="auto" width="32%"/>
+<img src="https://github.com/user-attachments/assets/cbb802e3-3768-4c29-b5ac-c4dc72392195" height="auto" width="32%"/>
+
 ## Стек: TS, HTML, SCSS, Webpack
 
 ## Бизнес цель
@@ -12,17 +19,6 @@
 - реализовать на основе базового кода компоненты и модели данных приложения;
 - соберать всё вместе и закончить работу над проектом.
 
-## Что улучшить в перспективе
-- Настроить бэк для получения данных на почту или в админку
-- Сделать при помощи регулярки маску для телефона 
-
-<img src="https://github.com/user-attachments/assets/d5239a49-e400-4a35-9104-229e495254cc" height="auto" width="48%"/>
-<img src="https://github.com/user-attachments/assets/d93b0de0-4ad2-49b9-9725-3829d0d60d89" height="auto" width="48%"/>
-<img src="https://github.com/user-attachments/assets/b2372271-a4b5-49c7-b511-f2976fb5a342" height="auto" width="48%"/>
-<img src="https://github.com/user-attachments/assets/6821a5d4-1650-4bee-8950-a21579e7050b" height="auto" width="48%"/>
-<img src="https://github.com/user-attachments/assets/e538b305-0d47-4a1b-964a-65658c6c5eed" height="auto" width="48%"/>
-<img src="https://github.com/user-attachments/assets/cbb802e3-3768-4c29-b5ac-c4dc72392195" height="auto" width="48%"/>
-
 ## Архитектура приложения
 
 Код приложения разделен на слои согласно парадигме `МѴР`:
@@ -32,6 +28,10 @@
 - `Презентер`, отвечает за связь представления и данных.
 
 ### Более подробную документацию можно посмотреть в файле `DOC.txt` в корне проекта
+
+## Что улучшить в перспективе
+- Настроить бэк для получения данных на почту или в админку
+- Сделать при помощи регулярки маску для телефона 
 
 ## Установка и запуск
 
