@@ -12,6 +12,10 @@
 - реализовать на основе базового кода компоненты и модели данных приложения;
 - соберать всё вместе и закончить работу над проектом.
 
+## Что улучшить в перспективе
+- Настроить бэк для получения данных на почту или в админку
+- Сделать при помощи регулярки маску для телефона 
+
 <img src="https://github.com/user-attachments/assets/d5239a49-e400-4a35-9104-229e495254cc" height="auto" width="48%"/>
 <img src="https://github.com/user-attachments/assets/d93b0de0-4ad2-49b9-9725-3829d0d60d89" height="auto" width="48%"/>
 <img src="https://github.com/user-attachments/assets/b2372271-a4b5-49c7-b511-f2976fb5a342" height="auto" width="48%"/>
