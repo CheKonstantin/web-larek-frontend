@@ -40,8 +40,12 @@ const config = {
 		// Add your plugins here
 		// Learn more about plugins from https://webpack.js.org/configuration/plugins/
 		new DefinePlugin({
-			'process.env.DEVELOPMENT': !isProduction,
-			'process.env.API_ORIGIN': JSON.stringify(process.env.API_ORIGIN ?? ''),
+			'process.env.DEVELOPMENT': JSON.stringify(!isProduction),
+			'process.env.API_ORIGIN': JSON.stringify(
+				isProduction
+					? 'https://larek-api.nomoreparties.co'
+					: process.env.API_ORIGIN ?? ''
+			),
 		}),
 	],
 	module: {
