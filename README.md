@@ -7,6 +7,9 @@
 <img src="https://github.com/user-attachments/assets/e538b305-0d47-4a1b-964a-65658c6c5eed" height="auto" width="32%"/>
 <img src="https://github.com/user-attachments/assets/cbb802e3-3768-4c29-b5ac-c4dc72392195" height="auto" width="32%"/>
 
+## Ссылка
+[Посмотреть проект](https://chekonstantin.github.io/web-larek-frontend/)
+
 ## Стек: TS, HTML, SCSS, Webpack
 
 ## Бизнес цель
